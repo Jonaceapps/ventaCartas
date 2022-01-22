@@ -2,6 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UsuariosController;
+use App\Http\Controllers\CartasController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +16,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware(['login-api-token', 'permisos']) -> prefix('usuarios') -> group(function(){
+   
+    Route::post('/login',[UsuariosController::class, 'login'])->withoutMiddleware(['login-api-token', 'permisos']);
+    Route::put('/registro',[UsuariosController::class, 'registro'])->withoutMiddleware(['login-api-token', 'permisos']);;
+    Route::get('/recoverPass',[UsuariosController::class, 'recoverPass'])->withoutMiddleware(['login-api-token', 'permisos']);
+    Route::put('/altaCarta/{id}',[CartasController::class, 'altaCarta']);
+    Route::put('/altaColeccion/{id}',[CartasController::class, 'altaColeccion']);
 });
