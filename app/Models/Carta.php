@@ -13,6 +13,10 @@ class Carta extends Model
         'nombre',
         'descripcion',
     ];
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+    ];
 
     public function colecciones(){
         return $this->belongsToMany(Coleccion::class,'cartas_colecciones');
