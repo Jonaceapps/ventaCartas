@@ -37,7 +37,6 @@ class CartasController extends Controller
                         $carta->save();
                         $respuesta["msg"] = "Carta Guardada";
                         foreach ($datos->coleccion as $id) {
-
                             $carta = Carta::find($carta->id);
                             $coleccion = Coleccion::find($id);
                             if ($carta && $coleccion){
@@ -169,9 +168,7 @@ class CartasController extends Controller
                         foreach ($datos->cartas as $id) {
                             $carta = Carta::find($id);
                             if ($carta && $coleccion){
-                                //$coleccion->cartas()->attach($carta);
                                 $coleccion->cartas()->syncWithoutDetaching($carta);
-                                print_r($carta->id);
                                 $respuesta["msg"] = "Cartas asignadas correctamente a la coleccion"; 
                             }
                         }
@@ -209,10 +206,12 @@ class CartasController extends Controller
             $venta -> cantidad = $datos->cantidad;
             $venta -> precioTotal = $datos->precioTotal;
             //Aqui se asocia la venta a un usuario.
-            if(isset($datos->usuario_asociado) && !empty($datos->usuario_asociado)){
+            if(isset($datos->usuario_asociado) && !empty($datos->usuario_asociado) && isset($datos->carta_asociada) && !empty($datos->carta_asociada) ){
                 $user = User::find($datos->usuario_asociado);
-                if($user){
+                $carta = Carta::find($datos->carta_asociada);
+                if($user && $carta){
                     $venta -> usuario_asociado = $datos->usuario_asociado;
+                    $venta -> carta_asociada = $datos->carta_asociada;
                     try {
                         $venta->save();
                         $respuesta["msg"] = "Venta subida correctamente";
@@ -222,12 +221,12 @@ class CartasController extends Controller
                     }  
                 } else {
                     $respuesta["status"] = 0;
-                    $respuesta["msg"] = "Usuario no encontrado o no existe";
+                    $respuesta["msg"] = "Usuario o carta no encontrada";
                 }
             }
             else {
                 $respuesta["status"] = 0;
-                $respuesta["msg"] = "No se ha asociado ningun usuario, vuelve a intentarlo";
+                $respuesta["msg"] = "No se ha asociado ningun usuario o carta, vuelve a intentarlo";
             }
 
         } else {

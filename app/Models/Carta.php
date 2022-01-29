@@ -21,4 +21,7 @@ class Carta extends Model
     public function colecciones(){
         return $this->belongsToMany(Coleccion::class,'cartas_colecciones');
     }
+    public function ventas(){
+        return $this -> hasMany(Venta::class, 'carta_asociada');
+    }
 }

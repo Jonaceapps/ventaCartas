@@ -18,8 +18,10 @@ class CreateVentasTable extends Migration
             $table->string('nombre');
             $table->Integer('cantidad');
             $table->Float('precioTotal');
+            $table->unsignedBigInteger('carta_asociada');
             $table->unsignedBigInteger('usuario_asociado');
             $table->foreign('usuario_asociado')->references('id')->on('usuarios');
+            $table->foreign('carta_asociada')->references('id')->on('cartas');
             $table->timestamps();
         });
     }
