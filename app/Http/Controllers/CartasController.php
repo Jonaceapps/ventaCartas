@@ -6,6 +6,7 @@ use App\Models\Carta;
 use App\Models\Coleccion;
 use App\Models\Venta;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 
 class CartasController extends Controller
@@ -236,30 +237,38 @@ class CartasController extends Controller
         return response()->json($respuesta);
     }
     //Listado por nombre de una carta para posteriormente poder ponerla a la venta
-    public function listadoVenta(Request $request, $id){
+    public function listadoVenta(Request $request){
 
         $respuesta = ["status" => 1, "msg" => "", "msg2" => ""];
-        $usuario = User::find($id);
         
-        if($usuario && $request->usuario->rol == 'Particular' || $usuario && $request->usuario->rol == 'Profesional'){
-
+        if($request->usuario->rol == 'Particular' ||$request->usuario->rol == 'Profesional'){
+            Log::info('Permisos Correctos');
             try {
                 //Devuelve listado de cartas por nombre
                 if($request -> has('nombre')){
                    $cartas = Carta::where('cartas.nombre','like','%'. $request -> input('nombre').'%')
                    ->get();
+                   if($cartas && count($cartas) != 0){
+                        Log::info('Coincidencias encontradas');
+                        $respuesta["msg"] = "Resultados encontrados";
+                        $respuesta['cartas'] = $cartas;
+                   }
+                   else {
+                        Log::warning('No se han encontrado coincidencias');
+                        $respuesta["status"] = 0;
+                        $respuesta["msg"] = "No se ha econtrado ninguna coincidencia";
+                   }
                 } else {
+                    Log::error('No se ha pasado el parametro nombre');
                     $respuesta["status"] = 0;
-                    $respuesta["msg"] = "No se ha encontrado ninguna coincidencia";
+                    $respuesta["msg"] = "No se ha pasado ningun nombre";
                 }
-                $respuesta['cartas'] = $cartas;
-    
             }catch (\Exception $e) {
                 $respuesta["status"] = 0;
                 $respuesta["msg"] = "Se ha producido un error".$e->getMessage();  
             }
-
         } else {
+            Log::error('Permisos no validos');
             $respuesta["status"] = 0;
             $respuesta["msg"] = "Usuario no encontrado o es posible que no tengas los permisos necesarios";
         }
