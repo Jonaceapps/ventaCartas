@@ -50,7 +50,7 @@ class UsuariosController extends Controller
 
         $respuesta = ["status" => 1, "msg" => ""];
 
-        $username = $req->username;
+        $username = $req->nombre;
         $usuario = User::where('nombre', $username) -> first();
 
         if ($usuario){
