@@ -3,11 +3,14 @@
 namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class LoginTest extends TestCase
 {
+    
+    use DatabaseTransactions;
     /**
      * A basic feature test example.
      *
@@ -36,6 +39,18 @@ class LoginTest extends TestCase
          -> assertJson([
              'status' => 0,
              'msg'    => 'La contraseña no es correcta',
+         ]);
+
+    }
+
+    public function test_CorrectLogin()
+    {
+        $response = $this->postJson('/api/usuarios/login', ['nombre' => 'Jonathan', 'pass' => 'Jona1234']);
+
+        $response
+         -> assertStatus(200)
+         -> assertJson([
+             'status' => 1,
          ]);
 
     }

@@ -55,7 +55,7 @@ class CartasController extends Controller
                 }
             } else {
                 $respuesta["status"] = 0;
-                $respuesta["msg"] = "No se ha asignado ninguna coleccion, intentalo de nuevo";
+                $respuesta["msg"] = "Coleccion o cartas vacias, intentalo de nuevo";
             }
         } else {
             $respuesta["status"] = 0;
