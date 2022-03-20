@@ -21,7 +21,7 @@ Route::middleware(['login-api-token', 'permisos']) -> prefix('usuarios') -> grou
     Route::post('/login',[UsuariosController::class, 'login'])->withoutMiddleware(['login-api-token', 'permisos']);
     Route::put('/registro',[UsuariosController::class, 'registro'])->withoutMiddleware(['login-api-token', 'permisos']);;
     Route::get('/recoverPass',[UsuariosController::class, 'recoverPass'])->withoutMiddleware(['login-api-token', 'permisos']);
-    Route::put('/altaCarta/{id}',[CartasController::class, 'altaCarta']);
+    Route::put('/altaCarta',[CartasController::class, 'altaCarta']);
     Route::put('/altaColeccion/{id}',[CartasController::class, 'altaColeccion']);
     Route::post('/asociarCartaColeccion/{id}',[CartasController::class, 'asociarCartaColeccion']);
     Route::get('/listadoVenta',[CartasController::class, 'listadoVenta']);

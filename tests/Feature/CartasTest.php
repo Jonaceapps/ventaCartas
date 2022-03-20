@@ -18,7 +18,7 @@ class CartasTest extends TestCase
      */
     public function test_CartaVacia()
     {
-        $response = $this->putJson('/api/usuarios/altaCarta?api_token=$2y$04$tPO/RaMCHBHSMhBj1gUkt.a3DEZp.ZvwmpRNAajzjLH9g1eQX.Lkq', ['nombre' => '', 'descripcion' => '']);
+        $response = $this->putJson('/api/usuarios/altaCarta?api_token=$2y$04$tPO/RaMCHBHSMhBj1gUkt.a3DEZp.ZvwmpRNAajzjLH9g1eQX.Lkq', ['nombre' => '', 'descripcion' => '', 'coleccion' => '']);
 
         $response
         -> assertStatus(200)
@@ -30,7 +30,7 @@ class CartasTest extends TestCase
 
     public function test_ColeccionError()
     {
-        $response = $this->putJson('/api/usuarios/altaCarta?api_token=$2y$04$tPO/RaMCHBHSMhBj1gUkt.a3DEZp.ZvwmpRNAajzjLH9g1eQX.Lkq', ['nombre' => '', 'descripcion' => '', 'coleccion' => '']);
+        $response = $this->putJson('/api/usuarios/altaCarta?api_token=$2y$04$tPO/RaMCHBHSMhBj1gUkt.a3DEZp.ZvwmpRNAajzjLH9g1eQX.Lkq', ['nombre' => 'Elfo oscuro v2', 'descripcion' => 'Elfo nocturno de color verde', 'coleccion' => [99]]);
 
         $response
         -> assertStatus(200)
@@ -43,7 +43,7 @@ class CartasTest extends TestCase
     public function test_cartaCreada()
     {
         $response = $this->putJson('/api/usuarios/altaCarta?api_token=$2y$04$tPO/RaMCHBHSMhBj1gUkt.a3DEZp.ZvwmpRNAajzjLH9g1eQX.Lkq',
-        ['nombre' => 'Elfo oscuro', 'descripcion' => 'Elfo nocturno de color verde', 'coleccion' => '1']);
+        ['nombre' => 'Elfo oscuro v2', 'descripcion' => 'Elfo nocturno de color verde', 'coleccion' => [1]]);
 
         $response
         -> assertStatus(200)

@@ -11,10 +11,10 @@ use Illuminate\Http\Request;
 
 class CartasController extends Controller
 {
-    public function altaCarta(Request $request, $id){
+    public function altaCarta(Request $request){
 
         $respuesta = ["status" => 1, "msg" => "", "msg2" => ""];
-        $usuario = User::find($id);
+        $usuario = User::find($request->usuario->id);
         
         if($usuario && $request->usuario->rol == 'Administrador'){
 
@@ -51,7 +51,7 @@ class CartasController extends Controller
                     } 
                 } else {
                     $respuesta["status"] = 0;
-                    $respuesta["msg"] = "Alguna coleccion asocida a la carta no es valida o no existe, intentalo de nuevo";
+                    $respuesta["msg"] = "Alguna coleccion asocida no es valida o no existe, intentalo de nuevo";
                 }
             } else {
                 $respuesta["status"] = 0;
